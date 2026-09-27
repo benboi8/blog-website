@@ -19,18 +19,18 @@ jobs:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
           tags: tag:github-actions
 
-      - name: Configure SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
+      # - name: Configure SSH
+      #   run: |
+      #     mkdir -p ~/.ssh
+      #     echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_key
+      #     chmod 600 ~/.ssh/deploy_key
 
-          ssh-keyscan -H ${{ secrets.DEPLOY_HOST}} >> ~/.ssh/known_hosts
+      #     ssh-keyscan -H ${{ secrets.DEPLOY_HOST}} >> ~/.ssh/known_hosts
 
       - name: Create release directory
         run: |
           ssh \
-            -i ~/.ssh/deploy_key \
+            -i ${{ secrets.DEPLOY_SSH_KEY }} \
             ${{ secrets.DEPLOY_USER}}@${{ secrets.DEPLOY_HOST}} \
             "mkdir -p /var/www/bwilliams.net/releases/${GITHUB_REF_NAME}"
 
