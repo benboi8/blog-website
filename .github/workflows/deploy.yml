@@ -13,19 +13,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:github-actions
+
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
 
-          ssh-keyscan -H "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts
+          ssh-keyscan -H caddy-server.tail12345.ts.net >> ~/.ssh/known_hosts
 
       - name: Create release directory
         run: |
           ssh \
             -i ~/.ssh/deploy_key \
-            "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" \
+            deploy@caddy-server.tail12345.ts.net \
             "mkdir -p /var/www/bwilliams.net/releases/${GITHUB_REF_NAME}"
 
       - name: Upload website
@@ -35,11 +42,11 @@ jobs:
             --exclude=".git/" \
             --exclude=".github/" \
             ./ \
-            "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/var/www/bwilliams.net/releases/${GITHUB_REF_NAME}/"
+            deploy@caddy-server.tail12345.ts.net:/var/www/bwilliams.net/releases/${GITHUB_REF_NAME}/
 
       - name: Activate release
         run: |
           ssh \
             -i ~/.ssh/deploy_key \
-            "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" \
+            deploy@caddy-server.tail12345.ts.net \
             "ln -sfn releases/${GITHUB_REF_NAME} /var/www/bwilliams.net/current"
