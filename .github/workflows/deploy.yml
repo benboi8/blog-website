@@ -26,20 +26,13 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
           
           ssh-keyscan -H "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts
-      
-      - name: Test SSH
-        run: |
-          ssh -i ~/.ssh/deploy_key \
-            "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" \
-            "hostname && whoami"
-            
 
       - name: Create release directory
         run: |
           ssh \
             -i ~/.ssh/deploy_key \
             ${{ secrets.DEPLOY_USER}}@${{ secrets.DEPLOY_HOST}} \
-            "mkdir -p /var/www/bwilliams.net/releases/main" 
+            "mkdir -p /var/www/bwilliams.net/current" 
 
       - name: Upload website
         run: |
@@ -48,11 +41,4 @@ jobs:
             --exclude=".git/" \
             --exclude=".github/" \
             ./ \
-            ${{ secrets.DEPLOY_USER}}@${{ secrets.DEPLOY_HOST}}:/var/www/bwilliams.net/releases/main
-
-      - name: Activate release
-        run: |
-          ssh \
-            -i ~/.ssh/deploy_key \
-            ${{ secrets.DEPLOY_USER}}@${{ secrets.DEPLOY_HOST}} \
-            "ln -sfn releases/main /var/www/bwilliams.net/current"
+            ${{ secrets.DEPLOY_USER}}@${{ secrets.DEPLOY_HOST}}:/var/www/bwilliams.net/current
