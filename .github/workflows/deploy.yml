@@ -24,7 +24,7 @@ jobs:
           ssh \
             -i ${{ secrets.DEPLOY_SSH_KEY }} \
             ${{ secrets.DEPLOY_USER}}@${{ secrets.DEPLOY_HOST}} \
-            "mkdir -p /var/www/bwilliams.net/releases/${GITHUB_REF_NAME}"
+            "mkdir -p /var/www/bwilliams.net/releases/main" 
 
       - name: Upload website
         run: |
@@ -33,11 +33,11 @@ jobs:
             --exclude=".git/" \
             --exclude=".github/" \
             ./ \
-            ${{ secrets.DEPLOY_USER}}@${{ secrets.DEPLOY_HOST}}:/var/www/bwilliams.net/releases/${GITHUB_REF_NAME}/
+            ${{ secrets.DEPLOY_USER}}@${{ secrets.DEPLOY_HOST}}:/var/www/bwilliams.net/releases/main
 
       - name: Activate release
         run: |
           ssh \
             -i ~/.ssh/deploy_key \
             ${{ secrets.DEPLOY_USER}}@${{ secrets.DEPLOY_HOST}} \
-            "ln -sfn releases/${GITHUB_REF_NAME} /var/www/bwilliams.net/current"
+            "ln -sfn releases/main /var/www/bwilliams.net/current"
