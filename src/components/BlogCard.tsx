@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Post } from "@/lib/types";
-import { formatDate } from "@/lib/posts";
+import { formatDate } from "@/lib/format";
 import { TagList } from "./TagList";
 
 export function BlogCard({ post, featured = false }: { post: Post; featured?: boolean }) {
