@@ -42,3 +42,10 @@ jobs:
             --exclude=".github/" \
             ./ \
             ${{ secrets.DEPLOY_USER}}@${{ secrets.DEPLOY_HOST}}:/var/www/bwilliams.net/current
+
+      - name: Build Node
+        run: |
+          ssh \
+            -i ~/.ssh/deploy_key \
+            npm run build
+            npm run start" 
