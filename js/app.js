@@ -2,7 +2,7 @@
     'use strict';
 
     const html = document.documentElement;
-    const themeToggle = document.querySelector('[data-theme-toggle]');
+    const themeToggle = document.querySelector('[data-theme]');
     const navToggle = document.querySelector('[data-nav-toggle]');
     const nav = document.querySelector('[data-nav]');
 

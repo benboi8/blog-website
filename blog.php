@@ -1,2 +1,38 @@
-<?php require __DIR__.'/lib.php'; $ps=posts();$cat=trim((string)($_GET['category']??''));if($cat)$ps=array_values(array_filter($ps,fn($p)=>strcasecmp($p['category'],$cat)===0));$cats=[];foreach(posts() as $p)$cats[$p['category']]=1;head('Blog','All articles from '.SITE_NAME.'.',site_url('/blog/')); ?>
-<section class="archive"><div class="container"><small>THE JOURNAL</small><h1>All articles</h1><p>Essays, field notes, and practical guides about technology, design, and the web.</p></div></section><section class="section"><div class="container"><div class="tools"><input id="search" type="search" placeholder="Search articles…" aria-label="Search articles"><div class="filters"><a class="<?=!$cat?'active':''?>" href="/blog/">All</a><?php foreach($cats as $c=>$_):?><a class="<?=strcasecmp($cat,$c)===0?'active':''?>" href="/blog/?category=<?=urlencode($c)?>"><?=e($c)?></a><?php endforeach;?></div></div><div class="grid" id="posts"><?php foreach($ps as $p):?><div class="item" data-search="<?=e(strtolower($p['title'].' '.$p['description'].' '.$p['category'].' '.implode(' ',$p['tags'])))?>"><?php card($p);?></div><?php endforeach;?></div><p id="none" hidden>No articles match your search.</p></div></section><?php foot(); ?>
+<?php require __DIR__.'/lib.php'; 
+$ps=posts();
+$cat=trim((string)($_GET['category']??''));
+if($cat)$ps=array_values(array_filter($ps,fn($p)=>strcasecmp($p['category'],$cat)===0));
+$cats=[];
+foreach(posts() as $p)$cats[$p['category']]=1;
+head('Blog','All articles from '.SITE_NAME.'.',site_url('/blog/'));
+ ?>
+
+<section class="archive">
+    <div class="container">
+        <small>THE JOURNAL</small>
+        <h1>All articles</h1>
+        <p>Essays, field notes, and practical guides about technology, design, and the web.</p>
+    </div>
+</section>
+<section class="section">
+    <div class="container">
+        <div class="tools">
+            <input id="search" type="search" placeholder="Search articles…" aria-label="Search articles">
+            <div class="filters">
+                <a class="<?=!$cat?'active':''?>" href="/blog/">All</a>
+                <?php foreach($cats as $c=>$_): ?>
+                    <a class="<?=strcasecmp($cat,$c)===0?'active':''?>" href="/blog/?category=<?=urlencode($c)?>"><?=e($c)?></a>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <div class="grid" id="posts">
+            <?php foreach($ps as $p): ?>
+                <div class="item" data-search="<?=e(strtolower($p['title'].' '.$p['description'].' '.$p['category'].' '.implode(' ',$p['tags'])))?>">
+                    <?php card($p); ?>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <p id="none" hidden>No articles match your search.</p>
+    </div>
+</section>
+<?php foot(); ?>
