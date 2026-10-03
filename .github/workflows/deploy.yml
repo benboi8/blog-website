@@ -48,7 +48,7 @@ jobs:
 
       - name: Build Node
         run: |
-          ssh -i ~/.ssh/deploy_key user@your-server "
+          ssh -i ~/.ssh/deploy_key ${{ secrets.DEPLOY_USER}}@${{ secrets.DEPLOY_HOST}}"
             cd /var/www/bwilliams.net/current &&
             npm ci &&
             npm run build &&
