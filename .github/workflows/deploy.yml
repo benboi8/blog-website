@@ -47,5 +47,7 @@ jobs:
         run: |
           ssh \
             -i ~/.ssh/deploy_key \
+            npm install
+            npm audit fix --force
             npm run build
             npm run start" 
