@@ -1,0 +1,10 @@
+example.com {
+    root * /var/www/blog
+    encode zstd gzip
+    @blog path /blog /blog/
+    rewrite @blog /blog.php
+    @article path_regexp article ^/blog/([a-z0-9-]+)/?$
+    rewrite @article /post.php?slug={re.article.1}
+    php_fastcgi 127.0.0.1:9000
+    file_server
+}
