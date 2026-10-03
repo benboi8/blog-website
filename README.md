@@ -30,14 +30,6 @@ coverImage: "/images/my-new-post.jpg"
 Your article goes here.
 ```
 
-Save it. **No HTML/PHP/JS editing and no build command are required.** PHP discovers every `.md` file in `/blogs` automatically on the next request.
-
-`blogs/my-new-post.md` becomes:
-
-`https://your-domain.example/blog/my-new-post/`
-
-The filename becomes the URL slug.
-
 ## Supported Markdown
 
 The included lightweight renderer supports headings, paragraphs, bold, italic, inline code, links, images, ordered/unordered lists, blockquotes, horizontal rules, and fenced code blocks.
