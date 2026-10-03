@@ -48,9 +48,10 @@ jobs:
 
       - name: Build Node
         run: |
-          ssh -i ~/.ssh/deploy_key ${{ secrets.DEPLOY_USER}}@${{ secrets.DEPLOY_HOST}}"
-            cd /var/www/bwilliams.net/current &&
-            npm ci &&
-            npm run build &&
-            sudo systemctl restart bwilliams
-          "
+           ssh \
+            -i ~/.ssh/deploy_key \
+            ${{ secrets.DEPLOY_USER}}@${{ secrets.DEPLOY_HOST}} \
+              cd /var/www/bwilliams.net/current &&
+              npm ci &&
+              npm run build &&
+              sudo systemctl restart bwilliams
