@@ -16,7 +16,8 @@ jobs:
       - name: Connect to Tailscale
         uses: tailscale/github-action@v4
         with:
-          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+          oauth-client-id: ${{ secrets.TAILSCALE_AUTHUSER }}
+          oauth-secret: ${{ secrets.TAILSCALE_OAUTH_KEY }}
           tags: tag:github-actions
 
       - name: Configure SSH
@@ -40,14 +41,16 @@ jobs:
             -e "ssh -i ~/.ssh/deploy_key" \
             --exclude=".git/" \
             --exclude=".github/" \
+            --exclude="node_modules/" \
+            --exclude=".next/" \
             ./ \
             ${{ secrets.DEPLOY_USER}}@${{ secrets.DEPLOY_HOST}}:/var/www/bwilliams.net/current
 
       - name: Build Node
         run: |
-          ssh \
-            -i ~/.ssh/deploy_key \
-            npm install
-            npm audit fix --force
-            npm run build
-            npm run start" 
+          ssh -i ~/.ssh/deploy_key user@your-server "
+            cd /var/www/bwilliams.net/current &&
+            npm ci &&
+            npm run build &&
+            sudo systemctl restart bwilliams
+          "
