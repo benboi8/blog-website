@@ -41,17 +41,5 @@ jobs:
             -e "ssh -i ~/.ssh/deploy_key" \
             --exclude=".git/" \
             --exclude=".github/" \
-            --exclude="node_modules/" \
-            --exclude=".next/" \
             ./ \
             ${{ secrets.DEPLOY_USER}}@${{ secrets.DEPLOY_HOST}}:/var/www/bwilliams.net/current
-
-      - name: Build Node
-        run: |
-           ssh \
-            -i ~/.ssh/deploy_key \
-            ${{ secrets.DEPLOY_USER}}@${{ secrets.DEPLOY_HOST}} \
-              cd /var/www/bwilliams.net/current &&
-              npm ci &&
-              npm run build &&
-              sudo systemctl restart bwilliams
